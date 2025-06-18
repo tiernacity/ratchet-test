@@ -1,0 +1,22 @@
+name: Ratchet Quality Checks
+on:
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  checks: write
+  contents: read
+
+jobs:
+  line-count-check:
+    name: Line Count Must Increase
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - uses: tiernacity/ratchet@v0.1.0-alpha.3
+        with:
+          metric: "wc -l < content.txt"
+          gt: main
