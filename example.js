@@ -28,6 +28,7 @@ const CONFIG = {
     timeout: 5000
 };
 
+// FIXME: use ES6 modules
 module.exports = {
     authenticateUser,
     processData,
