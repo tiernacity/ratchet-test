@@ -1,0 +1,79 @@
+name: Ratchet Quality Checks
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  reduce-todos:
+    name: Reduce TODO Comments
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for branch comparison
+          
+      - uses: tiernacity/ratchet@v1
+        with:
+          metric: "grep -r TODO . --exclude-dir=.git | wc -l"
+          lt: ${{ github.base_ref || 'HEAD^' }}
+          verbose: true
+
+  no-fixme-increase:
+    name: Prevent FIXME Comments from Increasing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - uses: tiernacity/ratchet@v1
+        with:
+          metric: "grep -r FIXME . --exclude-dir=.git | wc -l"
+          le: ${{ github.base_ref || 'HEAD^' }}
+          verbose: true
+
+  line-count-check:
+    name: Keep Files Under Control
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - uses: tiernacity/ratchet@v1
+        with:
+          metric: "find . -name '*.js' -o -name '*.ts' -o -name '*.py' | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo 0"
+          le: ${{ github.base_ref || 'HEAD^' }}
+          verbose: true
+
+  complexity-check:
+    name: Code Complexity Should Not Increase
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      # Example with pre-setup for Python complexity checking
+      - uses: tiernacity/ratchet@v1
+        with:
+          pre: "pip install radon || true"
+          metric: "find . -name '*.py' -exec radon cc {} + 2>/dev/null | grep -E '^[[:space:]]+[MF]' | wc -l || echo 0"
+          le: ${{ github.base_ref || 'HEAD^' }}
+          verbose: true
+
+  debug-lines:
+    name: Remove Debug Statements
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - uses: tiernacity/ratchet@v1
+        with:
+          metric: "grep -r 'console.log\\|print(' . --exclude-dir=.git --exclude-dir=node_modules | wc -l"
+          lt: ${{ github.base_ref || 'HEAD^' }}
+          verbose: true
