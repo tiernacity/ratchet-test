@@ -1,4 +1,6 @@
 This is a simple text file for testing ratchet.
 It contains multiple lines to test line counting functionality.
 Each line represents a unit of content.
+Here's an additional line to increase the total count.
+And another line to make the increase more significant.
 Trivial change to trigger PR checks.
