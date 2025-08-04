@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   line-count-check:
-    name: Line Count Must Increase
+    name: Invalid Config Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,4 +19,5 @@ jobs:
       - uses: tiernacity/ratchet@v0.1.0-alpha.3
         with:
           metric: "wc -l < content.txt"
-          gt: main
+          le: main
+          lt: main
