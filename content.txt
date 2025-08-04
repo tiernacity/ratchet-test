@@ -1,4 +1,3 @@
 This is a simple text file for testing ratchet.
-It contains multiple lines to test line counting functionality.
 Each line represents a unit of content.
 Trivial change to trigger PR checks.
