@@ -16,3 +16,4 @@ jobs:
         with:
           metric: "wc -l < content.txt"
           gt: main
+          lt: main
