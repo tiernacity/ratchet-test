@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0
           
-      - uses: tiernacity/ratchet@v0.1.0-alpha.3
+      - uses: tiernacity/ratchet@v0.1.0-alpha.4
         with:
           metric: "wc -l < content.txt"
           gt: main
