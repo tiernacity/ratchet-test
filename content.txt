@@ -1,3 +1,6 @@
 This is a simple text file for testing ratchet.
 It contains multiple lines to test line counting functionality.
 Each line represents a unit of content.
+Adding more lines to increase the count.
+This should make the ratchet check pass.
+Even more content here for good measure.
